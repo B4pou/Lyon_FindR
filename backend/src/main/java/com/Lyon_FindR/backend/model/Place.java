@@ -20,4 +20,7 @@ public class Place {
 
     @Column(nullable = false)
     private String note;
+
+    @Column(nullable = false)
+    private Boolean isFavorite;
 }
