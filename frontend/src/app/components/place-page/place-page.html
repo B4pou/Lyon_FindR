@@ -1,1 +1,24 @@
-<p>place-page works!</p>
+<section class="places-page">
+  <h1>Découvrir Lyon</h1>
+
+  @if (loading()) {
+    <p>Chargement des lieux...</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="error-message">{{ errorMessage() }}</p>
+  }
+
+  <div class="places-grid">
+    @for (place of places(); track place.id) {
+      <app-place-card
+        [place]="place"
+        (favoriteChanged)="onFavoriteChanged($event)">
+      </app-place-card>
+    } @empty {
+      @if (!loading() && !errorMessage() ) {
+        <p>Aucun lieu disponible pour le moment.</p>
+      }
+    }
+  </div>
+</section>

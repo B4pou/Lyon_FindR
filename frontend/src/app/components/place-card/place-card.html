@@ -1,0 +1,48 @@
+<article class="place-card">
+
+  <button
+    class="favorite-button"
+    type="button"
+    [class.active]="place().isFavorite"
+    [attr.aria-label]="place().isFavorite
+      ? 'Retirer des favoris'
+      : 'Ajouter aux favoris'"
+    [attr.aria-pressed]="place().isFavorite"
+    (click)="toggleFavorite()">
+
+    <svg
+      viewBox="0 0 24 24"
+      class="favorite-icon"
+      [attr.fill]="place().isFavorite ? 'currentColor' : 'none'"
+      aria-hidden="true">
+      <path
+        d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1
+        1.1-6.5-4.7-4.6 6.5-.9z"/>
+    </svg>
+  </button>
+
+  <div class="place-header">
+    <h3 class="place-name">{{ place().name }}</h3>
+
+    <span
+      class="category-badge"
+      [ngClass]="'category-' + place().category.toLowerCase()">
+      {{ place().category }}
+    </span>
+  </div>
+
+  <div class="place-note">
+    <svg
+      class="note-star"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true">
+      <path
+        d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1
+        1.1-6.5-4.7-4.6 6.5-.9z"/>
+    </svg>
+
+    <p>{{ place().note }}</p>
+  </div>
+
+</article>
