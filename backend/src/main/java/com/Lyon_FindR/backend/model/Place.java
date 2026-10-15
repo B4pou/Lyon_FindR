@@ -22,5 +22,7 @@ public class Place {
     private String note;
 
     @Column(nullable = false)
-    private Boolean isFavorite;
+    private Boolean isFavorite = false;
+
+    private String address;
 }
