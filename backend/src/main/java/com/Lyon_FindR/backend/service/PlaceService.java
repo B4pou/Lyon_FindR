@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.Lyon_FindR.backend.repository.PlaceRepository;
 import java.util.Optional;
+import java.util.List;
+import org.springframework.data.domain.Sort;
 
 @Data
 @Service
@@ -18,8 +20,10 @@ public class PlaceService {
         return placeRepository.findById(id);
     }
 
-    public Iterable<Place> getPlaces() {
-        return placeRepository.findAll();
+    public List<Place> getPlaces() {
+        return placeRepository.findAll(
+                Sort.by(Sort.Direction.ASC, "name")
+        );
     }
 
     public void deletePlace(final Long id) {
