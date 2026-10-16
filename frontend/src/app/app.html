@@ -1,6 +1,5 @@
 <div class="app-layout">
 
-  <!-- Sidebar -->
   <aside class="sidebar">
 
     <div class="sidebar-logo">
@@ -12,19 +11,19 @@
       <p class="nav-title">MENU</p>
 
       <nav class="nav-links">
-        <a routerLink="/home"
+        <a routerLink="/"
            class="nav-link">
           <span class="nav-icon">⌂</span>
           <span>Accueil</span>
         </a>
 
-        <a routerLink="/explorer"
+        <a routerLink="/"
            class="nav-link">
           <span class="nav-icon">⌕</span>
           <span>Explorer</span>
         </a>
 
-        <a routerLink="/favoris"
+        <a routerLink="/favorite"
            class="nav-link">
           <span class="nav-icon">♡</span>
           <span>Favoris</span>
@@ -42,13 +41,7 @@
 
   </aside>
 
-  <!-- Main content -->
   <main class="main-content">
-    <header class="topbar">
-      <span class="breadcrumb">Mon App / Espace de travail</span>
-      <div class="topbar-avatar">A</div>
-    </header>
-
     <section class="page-content">
       <router-outlet />
     </section>
