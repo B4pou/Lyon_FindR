@@ -1,5 +1,5 @@
 <section class="places-page">
-  <h1>Découvrir Lyon</h1>
+  <h1>{{ favoritesOnly() ? 'Mes favoris' : 'Découvrir Lyon' }}</h1>
 
   @if (loading()) {
     <p>Chargement des lieux...</p>
@@ -9,16 +9,20 @@
     <p class="error-message">{{ errorMessage() }}</p>
   }
 
-  <div class="places-grid">
-    @for (place of places(); track place.id) {
-      <app-place-card
-        [place]="place"
-        (favoriteChanged)="onFavoriteChanged($event)">
-      </app-place-card>
-    } @empty {
-      @if (!loading() && !errorMessage() ) {
-        <p>Aucun lieu disponible pour le moment.</p>
+  @if (!loading() && !errorMessage()) {
+    <div class="places-grid">
+      @for (place of visiblePlaces(); track place.id) {
+        <app-place-card
+          [place]="place"
+          (favoriteChanged)="onFavoriteChanged($event)">
+        </app-place-card>
+      } @empty {
+        <p>
+          {{ favoritesOnly()
+          ? 'Tu n’as pas encore de lieux favoris.'
+          : 'Aucun lieu disponible pour le moment.' }}
+        </p>
       }
-    }
-  </div>
+    </div>
+  }
 </section>
