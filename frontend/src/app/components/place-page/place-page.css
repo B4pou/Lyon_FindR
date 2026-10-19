@@ -16,3 +16,256 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.add-place-card {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  aspect-ratio: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  background: #fff;
+  border: 2px dashed #d1d5db;
+  border-radius: 16px;
+
+  font-family: inherit;
+  text-align: center;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.add-place-card:hover {
+  border-color: #6366f1;
+  background: #f5f3ff;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.1);
+}
+
+.add-place-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.add-place-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.add-place-description {
+  max-width: 240px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+
+  background: rgba(17, 24, 39, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.create-place-form {
+  position: relative;
+  box-sizing: border-box;
+
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  margin: auto;
+  padding: 30px;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.create-place-form h2 {
+  margin: 0 35px 12px 0;
+  font-size: 24px;
+  color: #111827;
+}
+
+.create-place-form label {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.create-place-form input,
+.create-place-form select,
+.create-place-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 14px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+
+  font: inherit;
+  color: #111827;
+}
+
+.create-place-form input:focus,
+.create-place-form select:focus,
+.create-place-form textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.create-place-form textarea {
+  resize: vertical;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: #e5e7eb;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.form-actions button {
+  padding: 11px 18px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-actions button[type="button"] {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.form-actions button[type="submit"] {
+  background: #4f46e5;
+  color: #fff;
+}
+
+.form-actions button[type="submit"]:hover {
+  background: #4338ca;
+}
+
+@media (max-width: 800px) {
+  .places-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .places-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .add-place-card {
+    min-height: 200px;
+  }
+
+  .create-place-form {
+    padding: 24px 20px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
+
+.rating-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 16px;
+}
+
+.rating-star {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #d1d5db;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.rating-star.selected {
+  color: #fbbf24;
+  text-shadow: 0 0 2px rgba(245, 158, 11, 0.25);
+}
+
+.rating-star:hover {
+  transform: scale(1.2);
+}
+
+.rating-value {
+  margin-left: 8px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 600;
+}

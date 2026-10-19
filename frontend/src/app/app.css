@@ -1,4 +1,3 @@
-  /* Reset */
 :host {
   display: block;
   min-height: 100vh;
@@ -17,7 +16,6 @@
   background: #f7f7fb;
 }
 
-/* Sidebar */
 .sidebar {
   width: 250px;
   min-width: 250px;
@@ -55,7 +53,6 @@
   font-weight: 700;
 }
 
-/* Navigation */
 .nav-title {
   padding: 0 12px;
   margin-bottom: 12px;
@@ -108,7 +105,6 @@
   line-height: 1;
 }
 
-/* Sidebar bottom */
 .sidebar-bottom {
   margin-top: auto;
 }
@@ -155,7 +151,6 @@
   font-size: 12px;
 }
 
-/* Main content */
 .main-content {
   flex: 1;
   min-width: 0;
@@ -182,7 +177,6 @@
   min-height: calc(100vh - 76px);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .sidebar {
     width: 76px;

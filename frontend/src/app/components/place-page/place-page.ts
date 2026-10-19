@@ -5,6 +5,7 @@ import {
   signal,
   computed
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
@@ -14,7 +15,7 @@ import { PlaceService, Place } from '../../services/place.service';
 @Component({
   selector: 'app-place-page',
   standalone: true,
-  imports: [CommonModule, PlaceCard],
+  imports: [CommonModule, PlaceCard, FormsModule],
   templateUrl: './place-page.html',
   styleUrl: './place-page.css'
 })
@@ -24,6 +25,8 @@ export class PlacePage implements OnInit {
   errorMessage = signal('');
 
   favoritesOnly = signal(false);
+
+  showCreateForm = signal(false);
 
   visiblePlaces = computed(() => {
     const allPlaces = this.places();
@@ -35,6 +38,13 @@ export class PlacePage implements OnInit {
 
   private readonly placeService = inject(PlaceService);
   private readonly route = inject(ActivatedRoute);
+
+  newPlace = {
+    name: '',
+    category: '' as Place['category'],
+    note: 0,
+    isFavorite: false
+  };
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -78,6 +88,45 @@ export class PlacePage implements OnInit {
         this.errorMessage.set(
           'Impossible de sauvegarder le favori.'
         );
+      }
+    });
+  }
+
+  createPlace(): void {
+    const placeToCreate = {
+      ...this.newPlace,
+      name: this.newPlace.name.trim()
+    };
+
+    if (
+      !placeToCreate.name ||
+      !placeToCreate.category ||
+      placeToCreate.note < 1 ||
+      placeToCreate.note > 5
+    ) {
+      return;
+    }
+
+    this.placeService.createPlace(placeToCreate).subscribe({
+      next: createdPlace => {
+        this.places.update(places =>
+          [...places, createdPlace].sort((a, b) =>
+            a.name.localeCompare(b.name, 'fr')
+          )
+        );
+
+        this.newPlace = {
+          name: '',
+          category: '' as Place['category'],
+          note: 1,
+          isFavorite: false
+        };
+
+        this.showCreateForm.set(false);
+      },
+      error: error => {
+        console.error('Erreur lors de la création du lieu', error);
+        this.errorMessage.set('Impossible de créer le lieu.');
       }
     });
   }

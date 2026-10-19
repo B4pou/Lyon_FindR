@@ -6,7 +6,7 @@ export interface Place {
   id: number;
   name: string;
   category: string;
-  note: string;
+  note: number;
   isFavorite: boolean;
 }
 
@@ -33,4 +33,12 @@ export class PlaceService {
       place
     );
   }
+
+  createPlace(place: Omit<Place, 'id'>) {
+    return this.http.post<Place>(
+      `${this.apiUrl}/place`,
+      place
+    );
+  }
+
 }
