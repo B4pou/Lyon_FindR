@@ -19,9 +19,10 @@ public class OsmController {
     }
 
     @GetMapping("/places")
-    public List<OverpassElement> places(@RequestParam String city,
-                                        @RequestParam(defaultValue = "museum") String tourism) {
-        return osmService.findPlaces(city, tourism);
+    public List<OverpassElement> places(@RequestParam(defaultValue = "Lyon") String city,
+                                        @RequestParam(defaultValue = "tourism") String key,
+                                        @RequestParam(defaultValue = "museum") String value) {
+        return osmService.findPlaces(city, key, value);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

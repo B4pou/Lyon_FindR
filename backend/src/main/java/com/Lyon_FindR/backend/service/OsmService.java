@@ -7,12 +7,15 @@ import com.Lyon_FindR.backend.dto.OverpassResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 
 @Service
 public class OsmService {
 
+    private static final Set<String> ALLOWED_KEYS =
+            Set.of("tourism", "amenity", "shop", "leisure", "historic", "natural");
     private static final Pattern TAG_VALUE = Pattern.compile("[a-z_]+");
 
     private final OverpassClient overpassClient;
@@ -21,19 +24,26 @@ public class OsmService {
         this.overpassClient = overpassClient;
     }
 
-    public List<OverpassElement> findPlaces(String city, String tourism) {
-        if (!TAG_VALUE.matcher(tourism).matches()) {
-            throw new IllegalArgumentException("Catégorie invalide : " + tourism);
+    public List<OverpassElement> findPlaces(String city, String key, String value) {
+        return search(city, key, value, "out center 50;");
+    }
+
+    public List<OverpassElement> findAllPlaces(String city, String key, String value) {
+        return search(city, key, value, "out center;");
+    }
+
+    private List<OverpassElement> search(String city, String key, String value, String outClause) {
+        if (!ALLOWED_KEYS.contains(key) || !TAG_VALUE.matcher(value).matches()) {
+            throw new IllegalArgumentException("Catégorie invalide : " + key + "=" + value);
         }
         String safeCity = city.replace("\\", "").replace("\"", "");
 
-        //  dmin_level=8 pour les commune française
         String query = """
-                [out:json][timeout:25];
-                area["name"="%s"]["boundary"="administrative"]["admin_level"="8"]->.a;  
-                node["tourism"="%s"](area.a);
-                out body 50;
-                """.formatted(safeCity, tourism);
+                [out:json][timeout:90];
+                area["name"="%s"]["boundary"="administrative"]["admin_level"="8"]->.a;
+                nwr["%s"="%s"](area.a);
+                %s
+                """.formatted(safeCity, key, value, outClause);
 
         OverpassResponse response = overpassClient.search(query);
         return response == null || response.elements() == null ? List.of() : response.elements();
