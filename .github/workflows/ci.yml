@@ -17,7 +17,7 @@ jobs:
       - name: Installer Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Installer les dépendances
         working-directory: frontend
@@ -26,3 +26,7 @@ jobs:
       - name: Vérifier le formatage Prettier
         working-directory: frontend
         run: npm run format:check
+
+      - name: Vérifier le code avec ESLint
+        working-directory: frontend
+        run: npm run lint
