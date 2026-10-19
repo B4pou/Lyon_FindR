@@ -35,8 +35,10 @@
   }
 
   @if (showCreateForm()) {
-    <div class="modal-overlay" (click)="showCreateForm.set(false)">
-      <form class="create-place-form" (ngSubmit)="createPlace()" (click)="$event.stopPropagation()">
+    <button class="modal-overlay"
+            (click)="onOverlayClick($event)"
+            (keydown.escape)="showCreateForm.set(false)">
+      <form class="create-place-form" (ngSubmit)="createPlace()" >
         <button
           type="button"
           class="modal-close"
@@ -67,7 +69,7 @@
           <option value="PARC">Parc</option>
         </select>
 
-        <label>Note du lieu</label>
+        <span>Note du lieu</span>
 
         <div class="rating-input">
           @for (rating of [1, 2, 3, 4, 5]; track rating) {
@@ -92,6 +94,6 @@
           <button type="submit">Créer le lieu</button>
         </div>
       </form>
-    </div>
+    </button>
   }
 </section>

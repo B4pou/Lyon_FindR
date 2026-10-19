@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,7 @@ export interface Place {
 export class PlaceService {
   private apiUrl = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getPlaces(): Observable<Place[]> {
     return this.http.get<Place[]>(`${this.apiUrl}/places`);

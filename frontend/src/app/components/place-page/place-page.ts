@@ -113,4 +113,10 @@ export class PlacePage implements OnInit {
       },
     });
   }
+
+  onOverlayClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget) {
+      this.showCreateForm.set(false);
+    }
+  }
 }
