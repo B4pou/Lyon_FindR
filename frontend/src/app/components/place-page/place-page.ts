@@ -105,7 +105,7 @@ export class PlacePage implements OnInit {
           isFavorite: false,
         };
 
-        this.showCreateForm.set(false)
+        this.showCreateForm.set(false);
       },
       error: (error) => {
         console.error('Erreur lors de la création du lieu', error);
