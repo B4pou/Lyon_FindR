@@ -23,6 +23,97 @@
           : 'Aucun lieu disponible pour le moment.' }}
         </p>
       }
+
+      @if (!favoritesOnly()) {
+        <button
+          type="button"
+          class="add-place-card"
+          (click)="showCreateForm.set(true)">
+
+          <span class="add-place-icon">+</span>
+          <span class="add-place-title">Ajouter un lieu</span>
+          <span class="add-place-description">
+            Partage une nouvelle découverte à Lyon
+          </span>
+        </button>
+      }
+    </div>
+  }
+
+  @if (showCreateForm()) {
+    <div
+      class="modal-overlay"
+      (click)="showCreateForm.set(false)">
+
+      <form
+        class="create-place-form"
+        (ngSubmit)="createPlace()"
+        (click)="$event.stopPropagation()">
+
+        <button
+          type="button"
+          class="modal-close"
+          aria-label="Fermer"
+          (click)="showCreateForm.set(false)">
+          &times;
+        </button>
+
+        <h2>Ajouter un lieu</h2>
+
+        <label for="place-name">Nom du lieu</label>
+        <input
+          id="place-name"
+          name="name"
+          [(ngModel)]="newPlace.name"
+          required
+          placeholder="Ex. : Parc de la Tête d'Or">
+
+        <label for="place-category">Catégorie</label>
+        <select
+          id="place-category"
+          name="category"
+          [(ngModel)]="newPlace.category"
+          required>
+          <option value="" disabled>Choisir une catégorie</option>
+          <option value="RESTAURANT">Restaurant</option>
+          <option value="LOISIR">Loisir</option>
+          <option value="VISITE">Visite</option>
+          <option value="PLACE">Place</option>
+          <option value="PARC">Parc</option>
+        </select>
+
+        <label>Note du lieu</label>
+
+        <div class="rating-input">
+          @for (rating of [1, 2, 3, 4, 5]; track rating) {
+            <button
+              type="button"
+              class="rating-star"
+              [class.selected]="rating <= newPlace.note"
+              [attr.aria-label]="'Donner ' + rating + ' sur 5'"
+              [attr.aria-pressed]="newPlace.note === rating"
+              (click)="newPlace.note = rating">
+              ★
+            </button>
+          }
+
+          <span class="rating-value">
+            {{ newPlace.note }}/5
+          </span>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="button"
+            (click)="showCreateForm.set(false)">
+            Annuler
+          </button>
+
+          <button type="submit">
+            Créer le lieu
+          </button>
+        </div>
+      </form>
     </div>
   }
 </section>
