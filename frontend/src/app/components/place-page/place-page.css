@@ -193,17 +193,17 @@
   cursor: pointer;
 }
 
-.form-actions button[type="button"] {
+.form-actions button[type='button'] {
   background: #f3f4f6;
   color: #374151;
 }
 
-.form-actions button[type="submit"] {
+.form-actions button[type='submit'] {
   background: #4f46e5;
   color: #fff;
 }
 
-.form-actions button[type="submit"]:hover {
+.form-actions button[type='submit']:hover {
   background: #4338ca;
 }
 
@@ -251,7 +251,9 @@
   font-size: 32px;
   line-height: 1;
   cursor: pointer;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .rating-star.selected {

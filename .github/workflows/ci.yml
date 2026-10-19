@@ -1,0 +1,28 @@
+
+name: Prettier CI
+
+'on':
+  push:
+  pull_request:
+
+jobs:
+  prettier:
+    name: Vérifier le formatage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Installer les dépendances
+        working-directory: frontend
+        run: npm ci
+
+      - name: Vérifier le formatage Prettier
+        working-directory: frontend
+        run: npm run format:check

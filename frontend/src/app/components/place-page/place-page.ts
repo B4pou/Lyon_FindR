@@ -1,10 +1,4 @@
-import {
-  Component,
-  inject,
-  OnInit,
-  signal,
-  computed
-} from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -17,7 +11,7 @@ import { PlaceService, Place } from '../../services/place.service';
   standalone: true,
   imports: [CommonModule, PlaceCard, FormsModule],
   templateUrl: './place-page.html',
-  styleUrl: './place-page.css'
+  styleUrl: './place-page.css',
 })
 export class PlacePage implements OnInit {
   places = signal<Place[]>([]);
@@ -31,9 +25,7 @@ export class PlacePage implements OnInit {
   visiblePlaces = computed(() => {
     const allPlaces = this.places();
 
-    return this.favoritesOnly()
-      ? allPlaces.filter(place => place.isFavorite)
-      : allPlaces;
+    return this.favoritesOnly() ? allPlaces.filter((place) => place.isFavorite) : allPlaces;
   });
 
   private readonly placeService = inject(PlaceService);
@@ -43,11 +35,11 @@ export class PlacePage implements OnInit {
     name: '',
     category: '' as Place['category'],
     note: 0,
-    isFavorite: false
+    isFavorite: false,
   };
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
+    this.route.data.subscribe((data) => {
       this.favoritesOnly.set(data['favoritesOnly'] === true);
     });
 
@@ -59,43 +51,36 @@ export class PlacePage implements OnInit {
     this.errorMessage.set('');
 
     this.placeService.getPlaces().subscribe({
-      next: places => {
+      next: (places) => {
         this.places.set(places);
         this.loading.set(false);
       },
-      error: error => {
+      error: (error) => {
         console.error('Erreur lors du chargement des lieux', error);
         this.errorMessage.set('Impossible de charger les lieux.');
         this.loading.set(false);
-      }
+      },
     });
   }
 
   onFavoriteChanged(updatedPlace: Place): void {
     this.placeService.updatePlace(updatedPlace).subscribe({
-      next: savedPlace => {
-        this.places.update(places =>
-          places.map(place =>
-            place.id === savedPlace.id ? savedPlace : place
-          )
+      next: (savedPlace) => {
+        this.places.update((places) =>
+          places.map((place) => (place.id === savedPlace.id ? savedPlace : place)),
         );
       },
-      error: error => {
-        console.error(
-          'Erreur lors de la mise à jour du favori',
-          error
-        );
-        this.errorMessage.set(
-          'Impossible de sauvegarder le favori.'
-        );
-      }
+      error: (error) => {
+        console.error('Erreur lors de la mise à jour du favori', error);
+        this.errorMessage.set('Impossible de sauvegarder le favori.');
+      },
     });
   }
 
   createPlace(): void {
     const placeToCreate = {
       ...this.newPlace,
-      name: this.newPlace.name.trim()
+      name: this.newPlace.name.trim(),
     };
 
     if (
@@ -108,26 +93,24 @@ export class PlacePage implements OnInit {
     }
 
     this.placeService.createPlace(placeToCreate).subscribe({
-      next: createdPlace => {
-        this.places.update(places =>
-          [...places, createdPlace].sort((a, b) =>
-            a.name.localeCompare(b.name, 'fr')
-          )
+      next: (createdPlace) => {
+        this.places.update((places) =>
+          [...places, createdPlace].sort((a, b) => a.name.localeCompare(b.name, 'fr')),
         );
 
         this.newPlace = {
           name: '',
           category: '' as Place['category'],
           note: 1,
-          isFavorite: false
+          isFavorite: false,
         };
 
-        this.showCreateForm.set(false);
+        this.showCreateForm.set(false)
       },
-      error: error => {
+      error: (error) => {
         console.error('Erreur lors de la création du lieu', error);
         this.errorMessage.set('Impossible de créer le lieu.');
-      }
+      },
     });
   }
 }
