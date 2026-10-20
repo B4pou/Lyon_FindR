@@ -1,7 +1,7 @@
 package com.Lyon_FindR.backend.repository;
 
 import com.Lyon_FindR.backend.model.Place;
-import org.hibernate.internal.util.Optional;
+import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
