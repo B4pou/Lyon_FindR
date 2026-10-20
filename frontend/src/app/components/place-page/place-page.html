@@ -35,10 +35,12 @@
   }
 
   @if (showCreateForm()) {
-    <button class="modal-overlay"
-            (click)="onOverlayClick($event)"
-            (keydown.escape)="showCreateForm.set(false)">
-      <form class="create-place-form" (ngSubmit)="createPlace()" >
+    <button
+      class="modal-overlay"
+      (click)="onOverlayClick($event)"
+      (keydown.escape)="showCreateForm.set(false)"
+    >
+      <form class="create-place-form" (ngSubmit)="createPlace()">
         <button
           type="button"
           class="modal-close"
