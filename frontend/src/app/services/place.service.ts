@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -11,13 +11,12 @@ export interface Place {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlaceService {
-
   private apiUrl = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getPlaces(): Observable<Place[]> {
     return this.http.get<Place[]>(`${this.apiUrl}/places`);
@@ -28,17 +27,10 @@ export class PlaceService {
   }
 
   updatePlace(place: Place): Observable<Place> {
-    return this.http.put<Place>(
-      `${this.apiUrl}/place/${place.id}`,
-      place
-    );
+    return this.http.put<Place>(`${this.apiUrl}/place/${place.id}`, place);
   }
 
   createPlace(place: Omit<Place, 'id'>) {
-    return this.http.post<Place>(
-      `${this.apiUrl}/place`,
-      place
-    );
+    return this.http.post<Place>(`${this.apiUrl}/place`, place);
   }
-
 }
