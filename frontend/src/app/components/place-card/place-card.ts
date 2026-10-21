@@ -1,6 +1,6 @@
-import {Component, inject, input, output} from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Place, PlaceService} from '../../services/place.service';
+import { Place, PlaceService } from '../../services/place.service';
 import { RouterLink } from '@angular/router';
 
 @Component({

@@ -38,7 +38,7 @@
   </div>
 
   <div class="place-note">
-    <div class="rating-stars" (click)="$event.stopPropagation()">
+    <div class="rating-stars">
       @for (star of [1, 2, 3, 4, 5]; track star) {
         <button
           type="button"
@@ -46,15 +46,13 @@
           [class.active]="star <= place().note"
           [attr.aria-label]="'Donner la note de ' + star + ' sur 5'"
           [attr.aria-pressed]="star === place().note"
-          (click)="updateNote(star, $event)"
+          (click)="$event.stopPropagation(); updateNote(star, $event)"
         >
           ★
         </button>
       }
     </div>
 
-    <p class="rating-value">
-      {{ place().note }}/5
-    </p>
+    <p class="rating-value">{{ place().note }}/5</p>
   </div>
 </article>
