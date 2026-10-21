@@ -1,11 +1,12 @@
 import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Place } from '../../services/place.service';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-place-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './place-card.html',
   styleUrl: './place-card.css',
 })
