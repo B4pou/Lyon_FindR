@@ -1,0 +1,13 @@
+@if (loading()) {
+  <p>Chargement du lieu...</p>
+} @else if (errorMessage()) {
+  <p class="error-message">{{ errorMessage() }}</p>
+} @else if (place(); as currentPlace) {
+  <article class="place-detail">
+    <h1>{{ currentPlace.name }}</h1>
+
+    <p>Catégorie : {{ currentPlace.category }}</p>
+
+    <p>Note : {{ currentPlace.note }}/5</p>
+  </article>
+}
