@@ -4,6 +4,10 @@
   <p class="error-message">{{ errorMessage() }}</p>
 } @else if (place(); as currentPlace) {
   <article class="place-detail">
+    <button class="back-button" [routerLink]="['/']">
+      <span aria-hidden="true">←</span>
+      Retour
+    </button>
     <h1>{{ currentPlace.name }}</h1>
 
     <p>Catégorie : {{ currentPlace.category }}</p>

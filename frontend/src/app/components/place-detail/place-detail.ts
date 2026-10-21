@@ -1,9 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Place, PlaceService } from '../../services/place.service';
 
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'app-place-detail',
   styleUrl: './place-detail.css',
   templateUrl: './place-detail.html',
