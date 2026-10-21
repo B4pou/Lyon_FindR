@@ -1,6 +1,6 @@
-import {Component, inject, signal} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Place, PlaceService} from '../../services/place.service';
+import {Component, inject, OnInit, signal} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Place, PlaceService } from '../../services/place.service';
 
 @Component({
   imports: [],
@@ -8,7 +8,7 @@ import {Place, PlaceService} from '../../services/place.service';
   styleUrl: './place-detail.css',
   templateUrl: './place-detail.html',
 })
-export class PlaceDetail {
+export class PlaceDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private placeService = inject(PlaceService);
 
