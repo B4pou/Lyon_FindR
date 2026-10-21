@@ -33,4 +33,8 @@ export class PlaceService {
   createPlace(place: Omit<Place, 'id'>) {
     return this.http.post<Place>(`${this.apiUrl}/place`, place);
   }
+
+  deletePlace(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/place/${id}`);
+  }
 }

@@ -77,6 +77,10 @@ export class PlacePage implements OnInit {
     });
   }
 
+  onPlaceDeleted(id: number): void {
+    this.places.update((places) => places.filter((place) => place.id !== id));
+  }
+
   createPlace(): void {
     const placeToCreate = {
       ...this.newPlace,
