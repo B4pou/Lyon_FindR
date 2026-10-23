@@ -9,6 +9,49 @@
     <p class="error-message">{{ errorMessage() }}</p>
   }
 
+  @if (!favoritesOnly() && !loading() && !errorMessage()) {
+    <section class="places-controls" aria-label="Filtrer et trier les lieux">
+      <div class="filter-group">
+        <h2>Catégories</h2>
+
+        <div class="filter-buttons">
+          @for (category of categories; track category.value) {
+            <button
+              type="button"
+              class="filter-button"
+              [class.active]="selectedCategories().includes(category.value)"
+              [attr.aria-pressed]="selectedCategories().includes(category.value)"
+              (click)="toggleCategory(category.value)"
+            >
+              {{ category.label }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="sort-group">
+        <label for="sort-by">Trier par</label>
+
+        <select id="sort-by" [value]="sortBy()" (change)="changeSortBy($any($event.target).value)">
+          <option value="name">Nom</option>
+          <option value="note">Note</option>
+          <option value="category">Catégorie</option>
+        </select>
+
+        <button
+          type="button"
+          class="sort-direction-button"
+          (click)="toggleDirection()"
+          [attr.aria-label]="
+            direction() === 'ASC' ? 'Passer en ordre décroissant' : 'Passer en ordre croissant'
+          "
+        >
+          {{ direction() === 'ASC' ? '↑ Croissant' : '↓ Décroissant' }}
+        </button>
+      </div>
+    </section>
+  }
+
   @if (!loading() && !errorMessage()) {
     <div class="places-grid">
       @for (place of visiblePlaces(); track place.id) {

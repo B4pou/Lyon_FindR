@@ -272,3 +272,79 @@ span {
   font-size: 14px;
   font-weight: 600;
 }
+
+.places-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+}
+
+.filter-group,
+.sort-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-group h2 {
+  width: 100%;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-button,
+.sort-direction-button,
+.reset-button {
+  padding: 0.55rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+}
+
+.filter-button.active {
+  background: #245c49;
+  border-color: #245c49;
+  color: white;
+}
+
+.sort-group select {
+  padding: 0.55rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.filter-button:focus-visible,
+.sort-direction-button:focus-visible,
+.reset-button:focus-visible {
+  outline: 2px solid #245c49;
+  outline-offset: 3px;
+}
+
+@media (min-width: 700px) {
+  .places-controls {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+  }
+
+  .filter-group {
+    flex: 1;
+  }
+
+  .filter-group h2 {
+    width: 100%;
+  }
+}

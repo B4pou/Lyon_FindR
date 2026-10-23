@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Place {
@@ -18,8 +18,16 @@ export class PlaceService {
 
   private http = inject(HttpClient);
 
-  getPlaces(): Observable<Place[]> {
-    return this.http.get<Place[]>(`${this.apiUrl}/places`);
+  getPlaces(categories: string[] = [], sortBy = 'name', direction: 'ASC' | 'DESC' = 'ASC') {
+    let params = new HttpParams().set('sortBy', sortBy).set('direction', direction);
+
+    for (const category of categories) {
+      params = params.append('categories', category);
+    }
+
+    return this.http.get<Place[]>(`${this.apiUrl}/places`, {
+      params,
+    });
   }
 
   getPlace(id: number): Observable<Place> {
