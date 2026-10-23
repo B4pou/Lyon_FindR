@@ -18,7 +18,7 @@ export class PlaceService {
 
   private http = inject(HttpClient);
 
-  getPlaces(categories: string[] = [], sortBy: string = 'name', direction: 'ASC' | 'DESC' = 'ASC') {
+  getPlaces(categories: string[] = [], sortBy = 'name', direction: 'ASC' | 'DESC' = 'ASC') {
     let params = new HttpParams().set('sortBy', sortBy).set('direction', direction);
 
     for (const category of categories) {
