@@ -6,6 +6,11 @@ import { ActivatedRoute } from '@angular/router';
 import { PlaceCard } from '../place-card/place-card';
 import { PlaceService, Place } from '../../services/place.service';
 
+type PlaceCategory = 'RESTAURANT' | 'LOISIR' | 'VISITE' | 'PLACE' | 'PARC';
+
+type SortField = 'name' | 'note' | 'category';
+type SortDirection = 'ASC' | 'DESC';
+
 @Component({
   selector: 'app-place-page',
   standalone: true,
@@ -14,13 +19,27 @@ import { PlaceService, Place } from '../../services/place.service';
   styleUrl: './place-page.css',
 })
 export class PlacePage implements OnInit {
+  private readonly placeService = inject(PlaceService);
+  private readonly route = inject(ActivatedRoute);
+
   places = signal<Place[]>([]);
   loading = signal(true);
   errorMessage = signal('');
 
   favoritesOnly = signal(false);
-
   showCreateForm = signal(false);
+
+  categories: { value: PlaceCategory; label: string }[] = [
+    { value: 'RESTAURANT', label: 'Restaurants' },
+    { value: 'LOISIR', label: 'Loisirs' },
+    { value: 'VISITE', label: 'Visites' },
+    { value: 'PLACE', label: 'Places' },
+    { value: 'PARC', label: 'Parcs' },
+  ];
+
+  selectedCategories = signal<PlaceCategory[]>([]);
+  sortBy = signal<SortField>('name');
+  direction = signal<SortDirection>('ASC');
 
   visiblePlaces = computed(() => {
     const allPlaces = this.places();
@@ -28,13 +47,10 @@ export class PlacePage implements OnInit {
     return this.favoritesOnly() ? allPlaces.filter((place) => place.isFavorite) : allPlaces;
   });
 
-  private readonly placeService = inject(PlaceService);
-  private readonly route = inject(ActivatedRoute);
-
   newPlace = {
     name: '',
     category: '' as Place['category'],
-    note: 0,
+    note: 1,
     isFavorite: false,
   };
 
@@ -50,17 +66,19 @@ export class PlacePage implements OnInit {
     this.loading.set(true);
     this.errorMessage.set('');
 
-    this.placeService.getPlaces().subscribe({
-      next: (places) => {
-        this.places.set(places);
-        this.loading.set(false);
-      },
-      error: (error) => {
-        console.error('Erreur lors du chargement des lieux', error);
-        this.errorMessage.set('Impossible de charger les lieux.');
-        this.loading.set(false);
-      },
-    });
+    this.placeService
+      .getPlaces(this.selectedCategories(), this.sortBy(), this.direction())
+      .subscribe({
+        next: (places) => {
+          this.places.set(places);
+          this.loading.set(false);
+        },
+        error: (error) => {
+          console.error('Erreur lors du chargement des lieux', error);
+          this.errorMessage.set('Impossible de charger les lieux.');
+          this.loading.set(false);
+        },
+      });
   }
 
   onFavoriteChanged(updatedPlace: Place): void {
@@ -97,11 +115,7 @@ export class PlacePage implements OnInit {
     }
 
     this.placeService.createPlace(placeToCreate).subscribe({
-      next: (createdPlace) => {
-        this.places.update((places) =>
-          [...places, createdPlace].sort((a, b) => a.name.localeCompare(b.name, 'fr')),
-        );
-
+      next: () => {
         this.newPlace = {
           name: '',
           category: '' as Place['category'],
@@ -110,6 +124,7 @@ export class PlacePage implements OnInit {
         };
 
         this.showCreateForm.set(false);
+        this.loadPlaces();
       },
       error: (error) => {
         console.error('Erreur lors de la création du lieu', error);
@@ -122,5 +137,32 @@ export class PlacePage implements OnInit {
     if (event.target === event.currentTarget) {
       this.showCreateForm.set(false);
     }
+  }
+
+  toggleCategory(category: PlaceCategory): void {
+    const selected = this.selectedCategories();
+
+    this.selectedCategories.set(
+      selected.includes(category)
+        ? selected.filter((item) => item !== category)
+        : [...selected, category],
+    );
+
+    this.loadPlaces();
+  }
+
+  changeSortBy(value: string): void {
+    if (value !== 'name' && value !== 'note' && value !== 'category') {
+      return;
+    }
+
+    this.sortBy.set(value);
+    this.loadPlaces();
+  }
+
+  toggleDirection(): void {
+    this.direction.update((current) => (current === 'ASC' ? 'DESC' : 'ASC'));
+
+    this.loadPlaces();
   }
 }

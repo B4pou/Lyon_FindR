@@ -4,6 +4,9 @@ import com.Lyon_FindR.backend.model.Place;
 import com.Lyon_FindR.backend.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.Lyon_FindR.backend.model.Category;
+import jakarta.validation.Valid;
+import java.util.List;
 
 import java.util.Optional;
 
@@ -15,10 +18,22 @@ public class PlaceController {
     private PlaceService placeService;
 
     @GetMapping("/places")
-    public Iterable<Place> getPlaces() {
-        return placeService.getPlaces();
-    }
+    public List<Place> getPlaces(
+            @RequestParam(required = false)
+            List<Category> categories,
 
+            @RequestParam(defaultValue = "name")
+            String sortBy,
+
+            @RequestParam(defaultValue = "ASC")
+            String direction) {
+
+        return placeService.getPlaces(
+                categories,
+                sortBy,
+                direction
+        );
+    }
     @GetMapping("/place/{id}")
     public Place getPlace(@PathVariable("id") final Long id) {
         Optional<Place> place = placeService.getPlace(id);
@@ -30,14 +45,14 @@ public class PlaceController {
     }
 
     @PostMapping("/place")
-    public Place createPlace(@RequestBody Place place) {
+    public Place createPlace(@Valid @RequestBody Place place) {
         return placeService.savePlace(place);
     }
 
     @PutMapping("/place/{id}")
     public Place updatePlace(
             @PathVariable Long id,
-            @RequestBody Place place) {
+            @Valid @RequestBody Place place) {
 
         place.setId(id);
         return placeService.savePlace(place);
