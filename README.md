@@ -39,8 +39,6 @@ Les catégories actuellement utilisées sont :
 - TypeScript
 - HTML
 - CSS
-- Angular Signals pour la gestion de l'état de l'interface
-- `HttpClient` pour les appels HTTP vers l'API
 
 ### Backend
 
@@ -48,7 +46,6 @@ Les catégories actuellement utilisées sont :
 - Spring Boot
 - Spring Web pour l'API REST
 - Spring Data JPA pour l'accès aux données
-- Lombok pour réduire le code répétitif des entités
 
 ### Base de données
 
@@ -91,18 +88,6 @@ Le backend suit une architecture en couches.
 | `service` | Contient la logique de traitement et coordonne les opérations. |
 | `repository` | Accède aux données avec Spring Data JPA. |
 | `model` | Définit les entités et les énumérations utilisées par l'application. |
-
-## Prérequis
-
-Avant de lancer le projet, il faut disposer des éléments suivants :
-
-- Java, dans une version compatible avec le projet Spring Boot.
-- Maven, ou le Maven Wrapper si celui-ci est présent dans le backend.
-- Node.js et npm, dans des versions compatibles avec le projet Angular.
-- PostgreSQL.
-- Git, si le projet doit être cloné depuis un dépôt.
-
-Les versions exactes dépendent des configurations du projet (`pom.xml`, `package.json` et fichier de configuration Angular).
 
 ## Installation et lancement
 
