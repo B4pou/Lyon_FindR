@@ -18,7 +18,9 @@ public class ImportController {
     }
 
     @PostMapping("/import")
-    public ImportReport importCity(@RequestParam(defaultValue = "Lyon") String city) {
-        return importService.importCity(city);
+    public ImportReport importCity(@RequestParam(defaultValue = "Métropole de Lyon") String city,
+                                   @RequestParam(required = false) String key,
+                                   @RequestParam(required = false) String value) {
+        return importService.importCity(city, key, value);
     }
 }

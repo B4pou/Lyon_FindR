@@ -7,6 +7,7 @@ import com.Lyon_FindR.backend.dto.OverpassResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -19,6 +20,8 @@ public class OsmService {
     private static final Pattern TAG_VALUE = Pattern.compile("[a-z_]+");
 
     private final OverpassClient overpassClient;
+
+    private static final Map<String, String> ADMIN_LEVELS = Map.of("Métropole de Lyon", "6");
 
     public OsmService(OverpassClient overpassClient) {
         this.overpassClient = overpassClient;
@@ -38,12 +41,14 @@ public class OsmService {
         }
         String safeCity = city.replace("\\", "").replace("\"", "");
 
+        String adminLevel = ADMIN_LEVELS.getOrDefault(safeCity, "8");   // 8 = commune par défaut
+
         String query = """
-                [out:json][timeout:90];
-                area["name"="%s"]["boundary"="administrative"]["admin_level"="8"]->.a;
-                nwr["%s"="%s"](area.a);
-                %s
-                """.formatted(safeCity, key, value, outClause);
+        [out:json][timeout:180];
+        area["name"="%s"]["boundary"="administrative"]["admin_level"="%s"]->.a;
+        nwr["%s"="%s"](area.a);
+        %s
+        """.formatted(safeCity, adminLevel, key, value, outClause);
 
         OverpassResponse response = overpassClient.search(query);
         return response == null || response.elements() == null ? List.of() : response.elements();
