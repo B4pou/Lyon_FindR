@@ -1,8 +1,5 @@
 <div class="app-layout">
-
-  <!-- Sidebar -->
   <aside class="sidebar">
-
     <div class="sidebar-logo">
       <div class="logo-icon">L</div>
       <span>Lyon FindR</span>
@@ -12,20 +9,17 @@
       <p class="nav-title">MENU</p>
 
       <nav class="nav-links">
-        <a routerLink="/home"
-           class="nav-link">
+        <a routerLink="/" class="nav-link">
           <span class="nav-icon">⌂</span>
           <span>Accueil</span>
         </a>
 
-        <a routerLink="/explorer"
-           class="nav-link">
+        <a routerLink="/" class="nav-link">
           <span class="nav-icon">⌕</span>
           <span>Explorer</span>
         </a>
 
-        <a routerLink="/favoris"
-           class="nav-link">
+        <a routerLink="/favorite" class="nav-link">
           <span class="nav-icon">♡</span>
           <span>Favoris</span>
         </a>
@@ -33,25 +27,16 @@
     </div>
 
     <div class="sidebar-bottom">
-      <a routerLink="/parametres"
-         class="nav-link">
+      <a routerLink="/parametres" class="nav-link">
         <span class="nav-icon">⚙</span>
         <span>Paramètres</span>
       </a>
     </div>
-
   </aside>
 
-  <!-- Main content -->
   <main class="main-content">
-    <header class="topbar">
-      <span class="breadcrumb">Mon App / Espace de travail</span>
-      <div class="topbar-avatar">A</div>
-    </header>
-
     <section class="page-content">
       <router-outlet />
     </section>
   </main>
-
 </div>

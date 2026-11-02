@@ -30,7 +30,6 @@ public class Place {
     @Column(nullable = false)
     private String category;         // ex : "tourism=museum"
 
-    @Column(nullable = false)
     private double latitude;
 
     @Column(nullable = false)

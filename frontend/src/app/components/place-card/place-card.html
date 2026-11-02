@@ -1,0 +1,58 @@
+<article class="place-card" [routerLink]="['/places', place().id]">
+  <button
+    class="favorite-button"
+    type="button"
+    [class.active]="place().isFavorite"
+    [attr.aria-label]="place().isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+    [attr.aria-pressed]="place().isFavorite"
+    (click)="$event.stopPropagation(); toggleFavorite()"
+  >
+    <svg
+      viewBox="0 0 24 24"
+      class="favorite-icon"
+      [attr.fill]="place().isFavorite ? 'currentColor' : 'none'"
+      aria-hidden="true"
+    >
+      <path
+        d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3.1-5.8 3.1
+        1.1-6.5-4.7-4.6 6.5-.9z"
+      />
+    </svg>
+  </button>
+  <button
+    class="delete-button"
+    type="button"
+    aria-label="Supprimer ce lieu"
+    title="Supprimer ce lieu"
+    (click)="deletePlace($event)"
+  >
+    🗑️
+  </button>
+
+  <div class="place-header">
+    <h3 class="place-name">{{ place().name }}</h3>
+
+    <span class="category-badge" [ngClass]="'category-' + place().category.toLowerCase()">
+      {{ place().category }}
+    </span>
+  </div>
+
+  <div class="place-note">
+    <div class="rating-stars">
+      @for (star of [1, 2, 3, 4, 5]; track star) {
+        <button
+          type="button"
+          class="rating-star"
+          [class.active]="star <= place().note"
+          [attr.aria-label]="'Donner la note de ' + star + ' sur 5'"
+          [attr.aria-pressed]="star === place().note"
+          (click)="$event.stopPropagation(); updateNote(star, $event)"
+        >
+          ★
+        </button>
+      }
+    </div>
+
+    <p class="rating-value">{{ place().note }}/5</p>
+  </div>
+</article>

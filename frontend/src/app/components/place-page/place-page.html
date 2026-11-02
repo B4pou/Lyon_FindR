@@ -1,0 +1,148 @@
+<section class="places-page">
+  <h1>{{ favoritesOnly() ? 'Mes favoris' : 'Découvrir Lyon' }}</h1>
+
+  @if (loading()) {
+    <p>Chargement des lieux...</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="error-message">{{ errorMessage() }}</p>
+  }
+
+  @if (!favoritesOnly() && !loading() && !errorMessage()) {
+    <section class="places-controls" aria-label="Filtrer et trier les lieux">
+      <div class="filter-group">
+        <h2>Catégories</h2>
+
+        <div class="filter-buttons">
+          @for (category of categories; track category.value) {
+            <button
+              type="button"
+              class="filter-button"
+              [class.active]="selectedCategories().includes(category.value)"
+              [attr.aria-pressed]="selectedCategories().includes(category.value)"
+              (click)="toggleCategory(category.value)"
+            >
+              {{ category.label }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="sort-group">
+        <label for="sort-by">Trier par</label>
+
+        <select id="sort-by" [value]="sortBy()" (change)="changeSortBy($any($event.target).value)">
+          <option value="name">Nom</option>
+          <option value="note">Note</option>
+          <option value="category">Catégorie</option>
+        </select>
+
+        <button
+          type="button"
+          class="sort-direction-button"
+          (click)="toggleDirection()"
+          [attr.aria-label]="
+            direction() === 'ASC' ? 'Passer en ordre décroissant' : 'Passer en ordre croissant'
+          "
+        >
+          {{ direction() === 'ASC' ? '↑ Croissant' : '↓ Décroissant' }}
+        </button>
+      </div>
+    </section>
+  }
+
+  @if (!loading() && !errorMessage()) {
+    <div class="places-grid">
+      @for (place of visiblePlaces(); track place.id) {
+        <app-place-card
+          [place]="place"
+          (favoriteChanged)="onFavoriteChanged($event)"
+          (placeDeleted)="onPlaceDeleted($event)"
+        >
+        </app-place-card>
+      } @empty {
+        <p>
+          {{
+            favoritesOnly()
+              ? 'Tu n’as pas encore de lieux favoris.'
+              : 'Aucun lieu disponible pour le moment.'
+          }}
+        </p>
+      }
+
+      @if (!favoritesOnly()) {
+        <button type="button" class="add-place-card" (click)="showCreateForm.set(true)">
+          <span class="add-place-icon">+</span>
+          <span class="add-place-title">Ajouter un lieu</span>
+          <span class="add-place-description"> Partage une nouvelle découverte à Lyon </span>
+        </button>
+      }
+    </div>
+  }
+
+  @if (showCreateForm()) {
+    <button
+      class="modal-overlay"
+      (click)="onOverlayClick($event)"
+      (keydown.escape)="showCreateForm.set(false)"
+    >
+      <form class="create-place-form" (ngSubmit)="createPlace()">
+        <button
+          type="button"
+          class="modal-close"
+          aria-label="Fermer"
+          (click)="showCreateForm.set(false)"
+        >
+          &times;
+        </button>
+
+        <h2>Ajouter un lieu</h2>
+
+        <label for="place-name">Nom du lieu</label>
+        <input
+          id="place-name"
+          name="name"
+          [(ngModel)]="newPlace.name"
+          required
+          placeholder="Ex. : Parc de la Tête d'Or"
+        />
+
+        <label for="place-category">Catégorie</label>
+        <select id="place-category" name="category" [(ngModel)]="newPlace.category" required>
+          <option value="" disabled>Choisir une catégorie</option>
+          <option value="RESTAURANT">Restaurant</option>
+          <option value="LOISIR">Loisir</option>
+          <option value="VISITE">Visite</option>
+          <option value="PLACE">Place</option>
+          <option value="PARC">Parc</option>
+        </select>
+
+        <span>Note du lieu</span>
+
+        <div class="rating-input">
+          @for (rating of [1, 2, 3, 4, 5]; track rating) {
+            <button
+              type="button"
+              class="rating-star"
+              [class.selected]="rating <= newPlace.note"
+              [attr.aria-label]="'Donner ' + rating + ' sur 5'"
+              [attr.aria-pressed]="newPlace.note === rating"
+              (click)="newPlace.note = rating"
+            >
+              ★
+            </button>
+          }
+
+          <span class="rating-value"> {{ newPlace.note }}/5 </span>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" (click)="showCreateForm.set(false)">Annuler</button>
+
+          <button type="submit">Créer le lieu</button>
+        </div>
+      </form>
+    </button>
+  }
+</section>

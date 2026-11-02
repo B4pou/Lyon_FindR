@@ -1,10 +1,13 @@
-  /* Reset */
 :host {
   display: block;
   min-height: 100vh;
   color: #202033;
-  font-family: Inter, -apple-system, BlinkMacSystemFont,
-  "Segoe UI", sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
 * {
@@ -17,7 +20,6 @@
   background: #f7f7fb;
 }
 
-/* Sidebar */
 .sidebar {
   width: 250px;
   min-width: 250px;
@@ -55,7 +57,6 @@
   font-weight: 700;
 }
 
-/* Navigation */
 .nav-title {
   padding: 0 12px;
   margin-bottom: 12px;
@@ -108,7 +109,6 @@
   line-height: 1;
 }
 
-/* Sidebar bottom */
 .sidebar-bottom {
   margin-top: auto;
 }
@@ -119,7 +119,7 @@
   gap: 11px;
   margin-top: 20px;
   padding: 18px 8px 4px;
-  border-top: 1px solid #eeeeF4;
+  border-top: 1px solid #eeeef4;
 }
 
 .avatar,
@@ -155,7 +155,6 @@
   font-size: 12px;
 }
 
-/* Main content */
 .main-content {
   flex: 1;
   min-width: 0;
@@ -182,7 +181,6 @@
   min-height: calc(100vh - 76px);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .sidebar {
     width: 76px;
