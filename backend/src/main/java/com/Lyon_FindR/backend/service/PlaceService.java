@@ -1,47 +1,39 @@
 package com.Lyon_FindR.backend.service;
 
-import lombok.Data;
 import com.Lyon_FindR.backend.model.Place;
-import com.Lyon_FindR.backend.model.Category;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.Lyon_FindR.backend.repository.PlaceRepository;
-import java.util.Optional;
-import java.util.List;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
-@Data
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class PlaceService {
 
-    @Autowired
+    private static final Set<String> SORTABLE_FIELDS = Set.of("name", "category");
+
     private PlaceRepository placeRepository;
 
-    public Optional<Place> getPlace(final Long id) {
-        return placeRepository.findById(id);
+    public PlaceService(PlaceRepository placeRepository) {
+        this.placeRepository = placeRepository;
     }
 
-    public List<Place> getPlaces(
-            List<Category> categories,
-            String sortBy,
-            String direction) {
+    public Optional<Place> getPlace(final String type, final Long id) { // osm_type : way, node, relation
+        return placeRepository.findByOsmTypeAndOsmId(type, id);
+    }
 
-        if (!List.of("name", "note", "category")
-                .contains(sortBy)) {
-            throw new IllegalArgumentException(
-                    "Critère de tri invalide"
-            );
+    public List<Place> getPlaces(List<String> categories, String sortBy, String direction) {
+        if (!SORTABLE_FIELDS.contains(sortBy)) {
+            throw new IllegalArgumentException("Critère de tri invalide : " + sortBy);
         }
 
-        Sort.Direction sortDirection =
-                Sort.Direction.fromString(direction);
-
-        Sort sort = Sort.by(sortDirection, sortBy);
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
 
         if (categories == null || categories.isEmpty()) {
             return placeRepository.findAll(sort);
         }
-
         return placeRepository.findByCategoryIn(categories, sort);
     }
 
@@ -50,7 +42,6 @@ public class PlaceService {
     }
 
     public Place savePlace(Place place) {
-        Place savedPlace = placeRepository.save(place);
-        return savedPlace;
+        return placeRepository.save(place);
     }
 }

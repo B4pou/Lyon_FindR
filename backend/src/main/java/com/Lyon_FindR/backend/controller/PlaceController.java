@@ -2,9 +2,7 @@ package com.Lyon_FindR.backend.controller;
 
 import com.Lyon_FindR.backend.model.Place;
 import com.Lyon_FindR.backend.service.PlaceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.Lyon_FindR.backend.model.Category;
 import jakarta.validation.Valid;
 import java.util.List;
 
@@ -14,13 +12,16 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 public class PlaceController {
 
-    @Autowired
-    private PlaceService placeService;
+    private final PlaceService placeService;
+
+    public PlaceController(PlaceService placeService) {
+        this.placeService = placeService;
+    }
 
     @GetMapping("/places")
     public List<Place> getPlaces(
             @RequestParam(required = false)
-            List<Category> categories,
+            List<String> categories,
 
             @RequestParam(defaultValue = "name")
             String sortBy,
@@ -34,9 +35,9 @@ public class PlaceController {
                 direction
         );
     }
-    @GetMapping("/place/{id}")
-    public Place getPlace(@PathVariable("id") final Long id) {
-        Optional<Place> place = placeService.getPlace(id);
+    @GetMapping("/place/{type}/{id}")
+    public Place getPlace(@PathVariable("type") final String type, @PathVariable("id") final Long id) {
+        Optional<Place> place = placeService.getPlace(type, id);
         if(place.isPresent()) {
             return place.get();
         } else {
